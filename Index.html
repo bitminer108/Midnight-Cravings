@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Midnight Cravings</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #121212;
+            color: #fff;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: #1f1f1f;
+            border-bottom: 1px solid #333;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #ff6f61;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #ff6f61;
+        }
+
+        /* Products Section */
+        .products-section {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .products-section h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: #ff6f61;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background-color: #1f1f1f;
+            border: 1px solid #333;
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .product-name {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .product-price {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            color: #ff6f61;
+        }
+
+        .add-to-cart {
+            background-color: #ff6f61;
+            color: #fff;
+            border: none;
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .add-to-cart:hover {
+            background-color: #ff3d3d;
+        }
+
+        /* Cart Section */
+        .cart-section {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 1.5rem;
+            background-color: #1f1f1f;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .cart-header {
+            font-size: 2rem;
+            text-align: center;
+            color: #ff6f61;
+            margin-bottom: 1rem;
+        }
+
+        /* Updated Cart Grid Layout */
+        .cart-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+
+        .cart-item {
+            background-color: #1f1f1f;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .cart-item img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .product-name {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin: 1rem 0;
+        }
+
+        .product-price {
+            color: #ff6f61;
+        }
+
+        .product-quantity input {
+            width: 50px;
+            text-align: center;
+            padding: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .remove-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: transparent;
+            border: none;
+            color: #ff3d3d;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .cart-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+        }
+
+        .cart-footer .total-amount {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ff6f61;
+        }
+
+        .cart-footer .checkout-btn {
+            background-color: #ff6f61;
+            color: #fff;
+            padding: 0.8rem 2rem;
+            border: none;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .cart-footer .checkout-btn:hover {
+            background-color: #ff3d3d;
+        }
+
+        /* Delivery Form */
+        .delivery-form {
+            margin-top: 2rem;
+            display: none;
+            flex-direction: column;
+            gap: 1rem;
+            background-color: #1f1f1f;
+            padding: 1.5rem;
+            border-radius: 10px;
+            border: 1px solid #333;
+        }
+
+        .delivery-form input,
+        .delivery-form button {
+            padding: 0.75rem;
+            font-size: 1rem;
+            border: 1px solid #333;
+            border-radius: 4px;
+            background-color: #1c1c1c;
+            color: #fff;
+        }
+
+        .delivery-form button {
+            background-color: #ff6f61;
+            cursor: pointer;
+        }
+
+        .delivery-form button:hover {
+            background-color: #ff3d3d;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background-color: #1f1f1f;
+            border-top: 1px solid #333;
+            margin-top: 2rem;
+        }
+
+        footer p {
+            color: #aaa;
+        }
+
+        .shop-address {
+            margin-top: 1rem;
+            font-size: 1rem;
+            color: #aaa;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <h1 class="logo">Midnight Cravings</h1>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="#products-section">Home</a></li>
+                <li><a href="#cart-section">Cart</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Products Section -->
+    <main class="products-section" id="products-section">
+        <h2>Our Snacks</h2>
+        <div class="product-grid">
+            <!-- Product 1 -->
+            <div class="product-card">
+                <img src="https://example.com/tedhe-medhe.jpg" alt="Bingo Tedhe Medhe" class="product-image">
+                <div class="product-name">Bingo Tedhe Medhe</div>
+                <div class="product-price">20 Rs/unit</div>
+                <button class="add-to-cart" onclick="addToCart('Bingo Tedhe Medhe', 20)">Add to Cart</button>
+            </div>
+
+            <!-- Product 2 -->
+            <div class="product-card">
+                <img src="https://example.com/choco-pie.jpg" alt="Orion Choco Pie" class="product-image">
+                <div class="product-name">Orion Choco Pie</div>
+                <div class="product-price">12 Rs/unit</div>
+                <button class="add-to-cart" onclick="addToCart('Orion Choco Pie', 12)">Add to Cart</button>
+            </div>
+
+            <!-- Product 3 -->
+            <div class="product-card">
+                <img src="https://example.com/mad-angles-achari-masti.jpg" alt="Bingo Mad Angles (Achari Masti)" class="product-image">
+                <div class="product-name">Bingo Mad Angles (Achari Masti)</div>
+                <div class="product-price">45 Rs/unit</div>
+                <button class="add-to-cart" onclick="addToCart('Bingo Mad Angles (Achari Masti)', 45)">Add to Cart</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Cart Section -->
+    <section class="cart-section" id="cart-section">
+        <h1 class="cart-header">Your Cart</h1>
+
+        <div id="cart-items" class="cart-grid">
+            <!-- Cart Items will be dynamically added here -->
+        </div>
+
+        <div class="cart-footer">
+            <div class="total-amount" id="total-amount">Total: 0 Rs</div>
+            <button class="checkout-btn" onclick="showDeliveryForm()">Proceed to Checkout</button>
+        </div>
+    </section>
+
+    <!-- Delivery Form Section -->
+    <div id="delivery-form" class="delivery-form">
+        <h3>Enter Your Delivery Details</h3>
+        <label for="name">Full Name</label>
+        <input type="text" id="name" placeholder="Enter your full name" required>
+        
+        <label for="address">Address</label>
+        <input type="text" id="address" placeholder="Enter your delivery address" required>
+        
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" placeholder="Enter your phone number" required>
+        
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="Enter your email address" required>
+
+        <button onclick="completeOrder()">Complete Order</button>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Midnight Cravings | All rights reserved</p>
+        <div class="shop-address">
+            <p>Shop Address: 418-C Azad Bhawan, Parul University, Vadodara, India</p>
+        </div>
+    </footer>
+
+    <script>
+        let cart = [];
+
+        // Function to add products to the cart
+        function addToCart(productName, productPrice) {
+            if (cart.length < 9) {  // Limit to a maximum of 9 items
+                cart.push({ name: productName, price: productPrice, quantity: 1 });
+                updateCart();
+            } else {
+                alert('You can only add up to 9 items to the cart.');
+            }
+        }
+
+        // Function to update the cart display
+        function updateCart() {
+            const cartItemsContainer = document.getElementById('cart-items');
+            cartItemsContainer.innerHTML = '';
+            let total = 0;
+
+            cart.forEach((item, index) => {
+                const cartItem = document.createElement('div');
+                cartItem.classList.add('cart-item');
+                cartItem.innerHTML = `
+                    <img src="https://example.com/${item.name.toLowerCase().replace(/\s+/g, '-')}.jpg" alt="${item.name}">
+                    <div class="product-name">${item.name}</div>
+                    <div class="product-price">${item.price} Rs</div>
+                    <div class="product-quantity">
+                        <input type="number" value="${item.quantity}" min="1" max="5" onchange="updateQuantity(${index}, this.value)">
+                    </div>
+                    <button class="remove-btn" onclick="removeItem(${index})">&times;</button>
+                `;
+                cartItemsContainer.appendChild(cartItem);
+                total += item.price * item.quantity;
+            });
+
+            document.getElementById('total-amount').innerText = `Total: ${total} Rs`;
+        }
+
+        // Function to update quantity
+        function updateQuantity(index, quantity) {
+            cart[index].quantity = parseInt(quantity);
+            updateCart();
+        }
+
+        // Function to remove an item from the cart
+        function removeItem(index) {
+            cart.splice(index, 1);
+            updateCart();
+        }
+
+        // Show the delivery form
+        function showDeliveryForm() {
+            document.getElementById('delivery-form').style.display = 'flex';
+        }
+
+        // Complete the order
+        function completeOrder() {
+            const name = document.getElementById('name').value;
+            const address = document.getElementById('address').value;
+            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value;
+
+            if (name && address && phone && email) {
+                alert(`Order placed successfully!\nName: ${name}\nAddress: ${address}\nPhone: ${phone}\nEmail: ${email}`);
+                // Reset the cart and hide the delivery form
+                cart = [];
+                updateCart();
+                document.getElementById('delivery-form').style.display = 'none';
+            } else {
+                alert('Please fill out all fields.');
+            }
+        }
+    </script>
+</body>
+</html>
